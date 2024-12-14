@@ -1,39 +1,44 @@
 import sqlite3 as sql_database
+from loader import logger
 from main import bot
 
-# id (INTEGER, PRIMARY KEY, AUTOINCREMENT) name (TEXT) age (INTEGER) grade (TEXT)
 
 class SqlSchool:
     """
     Класс SQL Школа
 
     Attributes:
-        __sql_school: база данных школды с учениками
-        __school_cur: курсор базы данных
+        __school: база данных школы с учениками
+        __cursor: курсор базы данных
         __bot: telegram бот
 
     """
     def __init__(self) -> None:
-        self.__sql_school = sql_database.connect('database/school_data.db')
-        self.__school_cur = self.__sql_school.cursor()
+        self.__school = sql_database.connect('database/school_data.db')
+        self.__cursor = self.__school.cursor()
         self.__bot = bot
 
     def school_start(self) -> None:
         """
-        Активация базы данных школы
+        Активация базы данных школы, создание таблицы учеников(pupils)
 
         """
-        if self.__sql_school:
-            print('Соединение с базой данных истории установлено')
+        if self.__school:
+            logger.info('Соединение с базой данных установлено')
 
-        self.sql_base.execute('CREATE TABLE IF NOT EXISTS request(.....)')
-        self.sql_base.commit()
+        self.__cursor.execute(
+            'CREATE TABLE IF NOT EXISTS'
+            'pupils(id INTEGER(PrimaryKey, AUTOINCREMENT),'
+            'name(TEXT, NOT NULL),'
+            'age(INTEGER, NOT NULL),'
+            'grade(TEXT, NOT NULL))'
+        )
+        self.__school.commit()
 
-        async def sql_add_command(self, state):
-        async with state.proxy() as data:
-        self.base_cur.execute('INSERT INTO request VALUES (?, ?, ?, ?)', tuple(data.values()))
-        self.sql_base.commit()
+    def add_pupil(self, name: str, age: int, grade: str) -> None:
 
-    async def sql_read(self, message):
-        for ret in self.base_cur.execute('SELECT * FROM request').fetchall():
-        await self.cricket_bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nОписание: {ret[2]}\nЦена: {ret[*1]}')
+        self.__cursor.execute(
+            'INSERT INTO pupils(name, age, grade) VALUES(?, ?, ?)',(name, age, grade)
+        )
+        self.__school.commit()
+        self.__school.close()

@@ -1,1 +1,1 @@
-from states.states import StateHigh
+from .states import CommonSchool
