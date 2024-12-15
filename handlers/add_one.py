@@ -1,19 +1,20 @@
 from aiogram import F, types
-from aiogram.filters import StateFilter
-from aiogram.fsm.context import FSMContext
 
-from loader import dp, logger
+from aiogram.fsm.context import FSMContext
+from aiogram.filters import Command, or_f
+
+from loader import Dispatcher, logger
 
 from database import SqlSchool
 from states import CommonSchool
 
 
 @logger.catch
-async def bot_add_one(text_message: types.Message) -> None:
-    dp.message.register(StateFilter(None), start_add, or_f(Command('add_one'), F.text.casefold() == 'add_one'))
-    dp.message.register(set_name, state=CommonSchool.name)
-    dp.message.register(set_age, state=CommonSchool.age)
-    dp.message.register(set_grade, state=CommonSchool.grade)
+def bot_add_one(dp: Dispatcher) -> None:
+    dp.message.register(start_add, or_f(Command('add_one'), F.text.casefold().func(lambda text: text == 'add_one')))
+    dp.message.register(set_name, CommonSchool.name)
+    dp.message.register(set_age, CommonSchool.age)
+    dp.message.register(set_grade, CommonSchool.grade)
 
 
 async def start_add(message: types.Message, state: FSMContext) -> None:
@@ -37,12 +38,16 @@ async def set_grade(message: types.Message, state: FSMContext) -> None:
     await state.update_data(grade=message.text)
     pupil_data = await state.get_data()
 
-    add_to_base(pupil_data['name'], pupil_data['age'], pupil_data['grade'])
+    pupil_name = str(pupil_data['name'])
+    pupil_age = int(pupil_data['age']) if pupil_data['age'].isdigit() else str(pupil_data['age'])
+    pupil_grade = str(pupil_data['grade'])
 
+    add_to_base(pupil_name, pupil_age, pupil_grade)
     await state.clear()
+    await message.answer(f'Ученик {pupil_name} добавлен в базу данных')
 
 
-def add_to_base(name: str, age: int, grade: str) -> None:
+def add_to_base(name: str, age: int | str, grade: str) -> None:
     school_base = SqlSchool()
 
     school_base.school_start()

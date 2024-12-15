@@ -1,5 +1,4 @@
 from aiogram.fsm.state import State, StatesGroup
-from main import bot
 
 
 class CommonSchool(StatesGroup):
