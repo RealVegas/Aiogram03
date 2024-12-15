@@ -21,7 +21,7 @@ async def main():
 
 
 async def stop_bot() -> None:
-    await clear_commands(bot)
+    # await clear_commands(bot)
     await bot.session.close()
     logger.info('Бот остановлен')
 
