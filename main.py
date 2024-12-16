@@ -1,8 +1,8 @@
 import asyncio
-from aiogram import F
+from aiogram import Bot, F
 from aiogram.filters import Command, or_f
 
-from loader import Bot, bot, dp, logger
+from loader import bot, dp, logger
 
 from handlers import bot_echo, bot_help, bot_start
 from handlers import add_one

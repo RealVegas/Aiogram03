@@ -1,7 +1,7 @@
-from aiogram import types
+from aiogram import Bot, types
 from loader import logger
 
-from loader import Bot, bot
+from loader import bot
 
 
 def is_equal(new, cur) -> bool:

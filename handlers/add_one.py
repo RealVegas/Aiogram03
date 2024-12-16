@@ -1,12 +1,12 @@
-from aiogram import F, types
+from aiogram import Dispatcher,F, types
 
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command, or_f
 
-from loader import Dispatcher, logger
-
 from database import SqlSchool
 from states import CommonSchool
+
+from loader import logger
 
 
 @logger.catch
