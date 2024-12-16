@@ -2,6 +2,7 @@ from aiogram import Bot, types
 from loader import logger
 
 from loader import bot
+from keyboards import start_keyboard
 
 
 def is_equal(new, cur) -> bool:
@@ -23,6 +24,8 @@ async def set_commands(robot: Bot) -> None:
         types.BotCommand(command='/start', description='Запустить бота'),
         types.BotCommand(command='/help', description='Помощь'),
         types.BotCommand(command='/add_one', description='Добавление ученика в базу данных'),
+        types.BotCommand(command='/links', description='Ссылки на новости, музыку, видео'),
+        types.BotCommand(command='/dynamic', description='Кнопка показать больше')
     ]
 
     current_commands = await robot.get_my_commands()
@@ -36,3 +39,4 @@ async def set_commands(robot: Bot) -> None:
 async def bot_start(text_message: types.Message) -> None:
     await set_commands(bot)
     await text_message.answer(text='Привет я школьный бот! Создал для Вас меню с командами')
+    await text_message.answer(text='И reply клавиатуру', reply_markup=start_keyboard)
