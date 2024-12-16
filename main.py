@@ -44,7 +44,7 @@ async def opt_1(callback: types.CallbackQuery) -> None:
 
 async def opt_2(callback: types.CallbackQuery) -> None:
     await callback.answer('Опция 2')
-    await bot.send_message(callback.from_user.id,'Вы выбрали опцию 2')
+    await bot.send_message(callback.from_user.id, 'Вы выбрали опцию 2')
 
 
 # Главные функции
